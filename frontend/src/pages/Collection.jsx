@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ShopContext }from '../context/shopContext';
+import { ShopContext } from '../context/ShopContext';
 import {assets} from '../assets/assets';
 import Title from '../components/Title';
 import ProductItem from '../components/ProductItem';
 
 const Collection = () => {
 
-  const { products }= useContext(ShopContext);
+  const { products , search , showSearch }= useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts , setFilterProducts] = useState([]);
   const [category , setCategory] = useState([]);
@@ -38,6 +38,10 @@ const Collection = () => {
   const applyFilter=()=>{
     
     let productsCopy= products.slice();
+
+    if(showSearch && search ) {
+      productsCopy = productsCopy.filter(item=>item.name.toLowerCase().includes(search.toLowerCase()))
+    }
 
     if(category.length > 0) {
       productsCopy= productsCopy.filter(item => category.includes(item.category))
@@ -76,7 +80,7 @@ const Collection = () => {
 
   useEffect(()=>{
     applyFilter();
-  } , [category,subCategory,products])
+  } , [category,subCategory,products,search,showSearch])
 
   useEffect(()=>{
    sortProduct();
@@ -84,7 +88,7 @@ const Collection = () => {
 
   return (
     
-    <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t'>
+    <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t border-gray-400'>
        
        {/* filter option */}
        <div className='min-w-60 '>
