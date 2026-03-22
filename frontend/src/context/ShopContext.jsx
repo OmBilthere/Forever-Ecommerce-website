@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 
 import { toast } from 'react-toastify'  
 
@@ -23,6 +23,8 @@ const ShopContextProvider =({children})=>{
     const [cartItems, setCartItems] = useState({})
 
     const [products, setProducts] = useState([])
+
+    const [token , setToken] = useState('')
 
     const navigate = useNavigate()
     
@@ -61,6 +63,17 @@ const ShopContextProvider =({children})=>{
        }
        
        setCartItems(cartData)
+
+       if(token) {
+        try {
+            await axios.post(backendUrl+'/api/cart/add',{itemId,size},{headers:{token}})
+
+        } catch (error) {
+            console.log(error)
+            toast.error('Error adding to cart')
+        }
+        
+       }
 
 
     }
@@ -154,6 +167,12 @@ const ShopContextProvider =({children})=>{
         getProductsData()
     },[])    
 
+    useEffect(()=>{
+        if(!token && localStorage.getItem('token')) {
+            setToken(localStorage.getItem('token'))
+        }
+    },[])
+
     const value = {
 
       products , currency , delivery_fee,
@@ -162,7 +181,9 @@ const ShopContextProvider =({children})=>{
       
       cartItems , addToCart , getCartCount , updateQuantity
 
-      , getCartAmount , navigate , backendUrl
+      , getCartAmount , navigate , backendUrl , setToken , token
+      
+      , setCartItems
       
     }
 
