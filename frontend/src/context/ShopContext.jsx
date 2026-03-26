@@ -1,4 +1,4 @@
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { toast } from 'react-toastify'  
 
@@ -10,7 +10,7 @@ export const ShopContext = createContext();
 
 const ShopContextProvider =({children})=>{
    
-    const currency = '$';
+    const currency = '₹';
 
     const delivery_fee= 10;
     
@@ -138,7 +138,7 @@ const ShopContextProvider =({children})=>{
             
                     try {
 
-                        if(cartItems[items][item]>0) {
+                        if(cartItems[items][item] > 0 && itemInfo && typeof itemInfo.price === 'number') {
 
                              totalAmount+= cartItems[items][item] * itemInfo.price
                         }
