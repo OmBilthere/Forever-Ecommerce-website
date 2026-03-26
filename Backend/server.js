@@ -17,6 +17,10 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json()); 
 
+app.get('/', (req, res) => {
+    res.send('Backend is running');
+});
+
 // API endPoints
 
 app.use('/api/user', userRouter)
